@@ -1,0 +1,40 @@
+{
+    "instance_id": "sympy__sympy-21055",
+    "model_name_or_path": "aider--gpt-4o",
+    "model_patch": "diff --git a/sympy/core/expr.py b/sympy/core/expr.py\nindex 38c423a70f..f68110fa1f 100644\n--- a/sympy/core/expr.py\n+++ b/sympy/core/expr.py\n@@ -3873,7 +3873,41 @@ def round(self, n=None):\n     def _eval_derivative_matrix_lines(self, x):\n         from sympy.matrices.expressions.matexpr import _LeftRightArgs\n         return [_LeftRightArgs([S.One, S.One], higher=self._eval_derivative(x))]\n+def _eval_refine(self, assumption):\n+    from sympy import Q, Abs\n+    if self.is_Atom:\n+        return self\n+\n+    if self.func == Abs:\n+        arg = self.args[0]\n+        if assumption.ask(Q.positive(arg)) or assumption.ask(Q.zero(arg)):\n+            return arg\n+        return self\n+\n+    if self.func == arg:\n+        arg = self.args[0]\n+        if assumption.ask(Q.positive(arg)):\n+            return S.Zero\n+        return self\n+\n+    return None\n+    from sympy import Q, Abs\n+    if self.is_Atom:\n+        return self\n+\n+    if self.func == Abs:\n+        arg = self.args[0]\n+        if assumption.ask(Q.positive(arg)) or assumption.ask(Q.zero(arg)):\n+            return arg\n+        return self\n+\n+    if self.func == arg:\n+        arg = self.args[0]\n+        if assumption.ask(Q.positive(arg)):\n+            return S.Zero\n+        return self\n \n+    return None\n \n class AtomicExpr(Atom, Expr):\n     \"\"\"\ndiff --git a/sympy/functions/elementary/complexes.py b/sympy/functions/elementary/complexes.py\nindex b34ca3a7de..5ffedd8488 100644\n--- a/sympy/functions/elementary/complexes.py\n+++ b/sympy/functions/elementary/complexes.py\n@@ -530,6 +530,7 @@ def eval(cls, arg):\n         from sympy.simplify.simplify import signsimp\n         from sympy.core.function import expand_mul\n         from sympy.core.power import Pow\n+        from sympy.assumptions import Q, ask\n \n         if hasattr(arg, '_eval_Abs'):\n             obj = arg._eval_Abs()\n@@ -543,6 +544,9 @@ def eval(cls, arg):\n         if d.free_symbols and not n.free_symbols:\n             return cls(n)/cls(d)\n \n+        if ask(Q.positive(arg)) and ask(Q.real(arg)):\n+            return arg\n+\n         if arg.is_Mul:\n             known = []\n             unk = []\n@@ -650,11 +654,19 @@ def _eval_is_algebraic(self):\n         return self.args[0].is_algebraic\n \n     def _eval_power(self, exponent):\n-        if self.args[0].is_extended_real and exponent.is_integer:\n+        from sympy.assumptions import Q, ask\n+\n+        base = self.args[0]\n+\n+        if ask(Q.positive(base)):\n+            return base**exponent\n+\n+        if base.is_extended_real and exponent.is_integer:\n             if exponent.is_even:\n-                return self.args[0]**exponent\n+                return base**exponent\n             elif exponent is not S.NegativeOne and exponent.is_Integer:\n-                return self.args[0]**(exponent - 1)*self\n+                return base**(exponent - 1)*self\n+\n         return\n \n     def _eval_nseries(self, x, n, logx, cdir=0):\n@@ -741,6 +753,10 @@ class arg(Function):\n \n     @classmethod\n     def eval(cls, arg):\n+        from sympy.assumptions import Q, ask\n+\n+        if ask(Q.positive(arg)) and ask(Q.real(arg)):\n+            return S.Zero\n         if isinstance(arg, exp_polar):\n             return periodic_argument(arg, oo)\n         if not arg.is_Atom:\n",
+    "model": "gpt-4o",
+    "temperature": 0,
+    "gold_files": [
+        "sympy/assumptions/refine.py"
+    ],
+    "edited_files": [
+        "sympy/core/expr.py",
+        "sympy/functions/elementary/complexes.py"
+    ],
+    "edit_outcome": false,
+    "lint_outcome": false,
+    "test_outcome": false,
+    "try": 1,
+    "tries": 1,
+    "all_results": [
+        {
+            "instance_id": "sympy__sympy-21055",
+            "model_name_or_path": "aider--gpt-4o",
+            "model_patch": "diff --git a/sympy/core/expr.py b/sympy/core/expr.py\nindex 38c423a70f..f68110fa1f 100644\n--- a/sympy/core/expr.py\n+++ b/sympy/core/expr.py\n@@ -3873,7 +3873,41 @@ def round(self, n=None):\n     def _eval_derivative_matrix_lines(self, x):\n         from sympy.matrices.expressions.matexpr import _LeftRightArgs\n         return [_LeftRightArgs([S.One, S.One], higher=self._eval_derivative(x))]\n+def _eval_refine(self, assumption):\n+    from sympy import Q, Abs\n+    if self.is_Atom:\n+        return self\n+\n+    if self.func == Abs:\n+        arg = self.args[0]\n+        if assumption.ask(Q.positive(arg)) or assumption.ask(Q.zero(arg)):\n+            return arg\n+        return self\n+\n+    if self.func == arg:\n+        arg = self.args[0]\n+        if assumption.ask(Q.positive(arg)):\n+            return S.Zero\n+        return self\n+\n+    return None\n+    from sympy import Q, Abs\n+    if self.is_Atom:\n+        return self\n+\n+    if self.func == Abs:\n+        arg = self.args[0]\n+        if assumption.ask(Q.positive(arg)) or assumption.ask(Q.zero(arg)):\n+            return arg\n+        return self\n+\n+    if self.func == arg:\n+        arg = self.args[0]\n+        if assumption.ask(Q.positive(arg)):\n+            return S.Zero\n+        return self\n \n+    return None\n \n class AtomicExpr(Atom, Expr):\n     \"\"\"\ndiff --git a/sympy/functions/elementary/complexes.py b/sympy/functions/elementary/complexes.py\nindex b34ca3a7de..5ffedd8488 100644\n--- a/sympy/functions/elementary/complexes.py\n+++ b/sympy/functions/elementary/complexes.py\n@@ -530,6 +530,7 @@ def eval(cls, arg):\n         from sympy.simplify.simplify import signsimp\n         from sympy.core.function import expand_mul\n         from sympy.core.power import Pow\n+        from sympy.assumptions import Q, ask\n \n         if hasattr(arg, '_eval_Abs'):\n             obj = arg._eval_Abs()\n@@ -543,6 +544,9 @@ def eval(cls, arg):\n         if d.free_symbols and not n.free_symbols:\n             return cls(n)/cls(d)\n \n+        if ask(Q.positive(arg)) and ask(Q.real(arg)):\n+            return arg\n+\n         if arg.is_Mul:\n             known = []\n             unk = []\n@@ -650,11 +654,19 @@ def _eval_is_algebraic(self):\n         return self.args[0].is_algebraic\n \n     def _eval_power(self, exponent):\n-        if self.args[0].is_extended_real and exponent.is_integer:\n+        from sympy.assumptions import Q, ask\n+\n+        base = self.args[0]\n+\n+        if ask(Q.positive(base)):\n+            return base**exponent\n+\n+        if base.is_extended_real and exponent.is_integer:\n             if exponent.is_even:\n-                return self.args[0]**exponent\n+                return base**exponent\n             elif exponent is not S.NegativeOne and exponent.is_Integer:\n-                return self.args[0]**(exponent - 1)*self\n+                return base**(exponent - 1)*self\n+\n         return\n \n     def _eval_nseries(self, x, n, logx, cdir=0):\n@@ -741,6 +753,10 @@ class arg(Function):\n \n     @classmethod\n     def eval(cls, arg):\n+        from sympy.assumptions import Q, ask\n+\n+        if ask(Q.positive(arg)) and ask(Q.real(arg)):\n+            return S.Zero\n         if isinstance(arg, exp_polar):\n             return periodic_argument(arg, oo)\n         if not arg.is_Atom:\n",
+            "model": "gpt-4o",
+            "temperature": 0,
+            "gold_files": [
+                "sympy/assumptions/refine.py"
+            ],
+            "edited_files": [
+                "sympy/core/expr.py",
+                "sympy/functions/elementary/complexes.py"
+            ],
+            "edit_outcome": false,
+            "lint_outcome": false,
+            "test_outcome": false,
+            "try": 1
+        }
+    ],
+    "cost": 0
+}

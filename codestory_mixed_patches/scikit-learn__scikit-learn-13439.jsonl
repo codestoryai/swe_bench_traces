@@ -1,0 +1,6 @@
+{
+    "instance_id": "scikit-learn__scikit-learn-13439",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/sklearn/pipeline.py b/sklearn/pipeline.py\nindex 7eaf9a46f..c24aedb77 100644\n--- a/sklearn/pipeline.py\n+++ b/sklearn/pipeline.py\n@@ -560,7 +560,8 @@ class Pipeline(_BaseComposition):\n     def _pairwise(self):\n         # check if first estimator expects pairwise input\n         return getattr(self.steps[0][1], '_pairwise', False)\n-\n+    def __len__(self):\n+        return len(self.steps)\n \n def _name_estimators(estimators):\n     \"\"\"Generate names for estimators.\"\"\"\n",
+    "resolved": true
+}

@@ -1,0 +1,6 @@
+{
+    "instance_id": "django__django-12286",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/django/core/checks/translation.py b/django/core/checks/translation.py\nindex 138ed07ff8..8c830ec941 100644\n--- a/django/core/checks/translation.py\n+++ b/django/core/checks/translation.py\n@@ -56,6 +56,9 @@ def check_setting_languages_bidi(app_configs, **kwargs):\n def check_language_settings_consistent(app_configs, **kwargs):\n     \"\"\"Error if language settings are not consistent with each other.\"\"\"\n     available_tags = {i for i, _ in settings.LANGUAGES} | {'en-us'}\n-    if settings.LANGUAGE_CODE not in available_tags:\n+    language_code = settings.LANGUAGE_CODE\n+    base_language = language_code.split('-')[0]\n+    \n+    if language_code not in available_tags and base_language not in available_tags:\n         return [E004]\n     return []\n",
+    "resolved": true
+}

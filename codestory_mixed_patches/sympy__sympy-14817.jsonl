@@ -1,0 +1,6 @@
+{
+    "instance_id": "sympy__sympy-14817",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/sympy/printing/pretty/pretty.py b/sympy/printing/pretty/pretty.py\nindex 0545797d5f..a132570e40 100644\n--- a/sympy/printing/pretty/pretty.py\n+++ b/sympy/printing/pretty/pretty.py\n@@ -823,15 +823,14 @@ def _print_MatAdd(self, expr):\n         for item in expr.args:\n             pform = self._print(item)\n             if s is None:\n-                s = pform     # First element\n+                s = pform  # First element\n             else:\n-                if S(item.args[0]).is_negative:\n-                    s = prettyForm(*stringPict.next(s, ' '))\n-                    pform = self._print(item)\n+                if S(item).is_negative:\n+                    s = prettyForm(*stringPict.next(s, ' - '))\n+                    pform = self._print(-item)  # Print the negative item as positive\n                 else:\n                     s = prettyForm(*stringPict.next(s, ' + '))\n                 s = prettyForm(*stringPict.next(s, pform))\n-\n         return s\n \n     def _print_MatMul(self, expr):\n",
+    "resolved": false
+}

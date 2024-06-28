@@ -1,0 +1,6 @@
+{
+    "instance_id": "django__django-14411",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/django/contrib/auth/forms.py b/django/contrib/auth/forms.py\nindex 20d8922799..6fec0027a1 100644\n--- a/django/contrib/auth/forms.py\n+++ b/django/contrib/auth/forms.py\n@@ -50,6 +50,9 @@ class ReadOnlyPasswordHashWidget(forms.Widget):\n         context['summary'] = summary\n         return context\n \n+    def id_for_label(self, id_):\n+        return None  # This widget is not labelable\n+\n \n class ReadOnlyPasswordHashField(forms.Field):\n     widget = ReadOnlyPasswordHashWidget\n",
+    "resolved": true
+}

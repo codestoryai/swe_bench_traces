@@ -1,0 +1,6 @@
+{
+    "instance_id": "sympy__sympy-18532",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/sympy/core/basic.py b/sympy/core/basic.py\nindex 6866648d4e..ca853d13cc 100644\n--- a/sympy/core/basic.py\n+++ b/sympy/core/basic.py\n@@ -504,10 +504,10 @@ def atoms(self, *types):\n             types = tuple(\n                 [t if isinstance(t, type) else type(t) for t in types])\n         else:\n-            types = (Atom,)\n+            types = (object,)\n         result = set()\n         for expr in preorder_traversal(self):\n-            if isinstance(expr, types):\n+            if not expr.args and isinstance(expr, types):\n                 result.add(expr)\n         return result\n \n",
+    "resolved": true
+}

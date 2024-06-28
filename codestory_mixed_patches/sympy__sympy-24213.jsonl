@@ -1,0 +1,6 @@
+{
+    "instance_id": "sympy__sympy-24213",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/sympy/physics/units/unitsystem.py b/sympy/physics/units/unitsystem.py\nindex a436880c4b..5c92bde9cf 100644\n--- a/sympy/physics/units/unitsystem.py\n+++ b/sympy/physics/units/unitsystem.py\n@@ -172,10 +172,11 @@ def _collect_factor_and_dimension(self, expr):\n             return factor ** exp_factor, dim ** (exp_factor * exp_dim)\n         elif isinstance(expr, Add):\n             factor, dim = self._collect_factor_and_dimension(expr.args[0])\n+            dim_deps = self.get_dimension_system().get_dimensional_dependencies(dim)\n             for addend in expr.args[1:]:\n-                addend_factor, addend_dim = \\\n-                    self._collect_factor_and_dimension(addend)\n-                if dim != addend_dim:\n+                addend_factor, addend_dim = self._collect_factor_and_dimension(addend)\n+                addend_dim_deps = self.get_dimension_system().get_dimensional_dependencies(addend_dim)\n+                if dim_deps != addend_dim_deps:\n                     raise ValueError(\n                         'Dimension of \"{}\" is {}, '\n                         'but it should be {}'.format(\n",
+    "resolved": true
+}

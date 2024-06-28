@@ -1,0 +1,6 @@
+{
+    "instance_id": "django__django-14608",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/django/forms/formsets.py b/django/forms/formsets.py\nindex a89c35599f..f46af9b839 100644\n--- a/django/forms/formsets.py\n+++ b/django/forms/formsets.py\n@@ -295,7 +295,7 @@ class BaseFormSet:\n         \"\"\"\n         if self._non_form_errors is None:\n             self.full_clean()\n-        return self._non_form_errors\n+        return self.error_class(self._non_form_errors, 'nonform')\n \n     @property\n     def errors(self):\n",
+    "resolved": true
+}

@@ -1,0 +1,6 @@
+{
+    "instance_id": "django__django-15789",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/django/utils/html.py b/django/utils/html.py\nindex d0bc97be80..bd998b890f 100644\n--- a/django/utils/html.py\n+++ b/django/utils/html.py\n@@ -59,7 +59,7 @@ _json_script_escapes = {\n }\n \n \n-def json_script(value, element_id=None):\n+def json_script(value, element_id=None, encoder=None):\n     \"\"\"\n     Escape all the HTML/XML special characters with their unicode escapes, so\n     value is safe to be output anywhere except for inside a tag attribute. Wrap\n@@ -67,7 +67,10 @@ def json_script(value, element_id=None):\n     \"\"\"\n     from django.core.serializers.json import DjangoJSONEncoder\n \n-    json_str = json.dumps(value, cls=DjangoJSONEncoder).translate(_json_script_escapes)\n+    if encoder is None:\n+        encoder = DjangoJSONEncoder\n+\n+    json_str = json.dumps(value, cls=encoder).translate(_json_script_escapes)\n     if element_id:\n         template = '<script id=\"{}\" type=\"application/json\">{}</script>'\n         args = (element_id, mark_safe(json_str))\n",
+    "resolved": true
+}

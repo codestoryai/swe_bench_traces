@@ -1,0 +1,6 @@
+{
+    "instance_id": "pytest-dev__pytest-7373",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/src/_pytest/mark/evaluate.py b/src/_pytest/mark/evaluate.py\nindex 759191668..673c022fc 100644\n--- a/src/_pytest/mark/evaluate.py\n+++ b/src/_pytest/mark/evaluate.py\n@@ -19,16 +19,10 @@ evalcache_key = StoreKey[Dict[str, Any]]()\n \n \n def cached_eval(config: Config, expr: str, d: Dict[str, object]) -> Any:\n-    default = {}  # type: Dict[str, object]\n-    evalcache = config._store.setdefault(evalcache_key, default)\n-    try:\n-        return evalcache[expr]\n-    except KeyError:\n-        import _pytest._code\n-\n-        exprcode = _pytest._code.compile(expr, mode=\"eval\")\n-        evalcache[expr] = x = eval(exprcode, d)\n-        return x\n+    import _pytest._code\n+\n+    exprcode = _pytest._code.compile(expr, mode=\"eval\")\n+    return eval(exprcode, d)\n \n \n class MarkEvaluator:\n",
+    "resolved": true
+}

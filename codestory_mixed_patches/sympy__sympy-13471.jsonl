@@ -1,0 +1,6 @@
+{
+    "instance_id": "sympy__sympy-13471",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/sympy/core/numbers.py b/sympy/core/numbers.py\nindex 7bc96e68eb..bc6576f6ac 100644\n--- a/sympy/core/numbers.py\n+++ b/sympy/core/numbers.py\n@@ -1042,7 +1042,8 @@ def __new__(cls, num, dps=None, prec=None, precision=None):\n                 # it's a hexadecimal (coming from a pickled object)\n                 # assume that it is in standard form\n                 num = list(num)\n-                num[1] = long(num[1], 16)\n+                # Remove the 'L' suffix if present, then convert to int\n+                num[1] = int(num[1].rstrip('L'), 16)\n                 _mpf_ = tuple(num)\n             else:\n                 if len(num) == 4:\n",
+    "resolved": true
+}

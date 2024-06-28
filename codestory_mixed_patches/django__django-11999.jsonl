@@ -1,0 +1,6 @@
+{
+    "instance_id": "django__django-11999",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/django/db/models/fields/__init__.py b/django/db/models/fields/__init__.py\nindex ee45bb941e..96ccce72dd 100644\n--- a/django/db/models/fields/__init__.py\n+++ b/django/db/models/fields/__init__.py\n@@ -762,7 +762,7 @@ class Field(RegisterLookupMixin):\n             # such fields can't be deferred (we don't have a check for this).\n             if not getattr(cls, self.attname, None):\n                 setattr(cls, self.attname, self.descriptor_class(self))\n-        if self.choices is not None:\n+        if self.choices is not None and not hasattr(cls, 'get_%s_display' % self.name):\n             setattr(cls, 'get_%s_display' % self.name,\n                     partialmethod(cls._get_FIELD_display, field=self))\n \n",
+    "resolved": true
+}

@@ -1,0 +1,38 @@
+{
+    "instance_id": "matplotlib__matplotlib-24970",
+    "model_name_or_path": "aider--gpt-4o",
+    "model_patch": "diff --git a/lib/matplotlib/colors.py b/lib/matplotlib/colors.py\nindex 2d3072da04..960a3464ba 100644\n--- a/lib/matplotlib/colors.py\n+++ b/lib/matplotlib/colors.py\n@@ -725,11 +725,16 @@ class Colormap:\n                 # Avoid converting large positive values to negative integers.\n                 np.clip(xa, -1, self.N, out=xa)\n                 xa = xa.astype(int)\n-        # Set the over-range indices before the under-range;\n-        # otherwise the under-range values get converted to over-range.\n-        xa[xa > self.N - 1] = self._i_over\n-        xa[xa < 0] = self._i_under\n-        xa[mask_bad] = self._i_bad\n+        \n+        # Create arrays for out-of-bounds and bad values with correct dtype\n+        i_over = np.full_like(xa, self._i_over, dtype=np.min_scalar_type(self._i_over))\n+        i_under = np.full_like(xa, self._i_under, dtype=np.min_scalar_type(self._i_under))\n+        i_bad = np.full_like(xa, self._i_bad, dtype=np.min_scalar_type(self._i_bad))\n+\n+        # Use np.where for conditional assignments\n+        xa = np.where(xa > self.N - 1, i_over, xa)\n+        xa = np.where(xa < 0, i_under, xa)\n+        xa = np.where(mask_bad, i_bad, xa)\n \n         lut = self._lut\n         if bytes:\n@@ -740,7 +745,7 @@ class Colormap:\n         if alpha is not None:\n             alpha = np.clip(alpha, 0, 1)\n             if bytes:\n-                alpha *= 255  # Will be cast to uint8 upon assignment.\n+                alpha = (alpha * 255).astype(np.uint8)\n             if alpha.shape not in [(), xa.shape]:\n                 raise ValueError(\n                     f\"alpha is array-like but its shape {alpha.shape} does \"\n",
+    "model": "gpt-4o",
+    "temperature": 0,
+    "gold_files": [
+        "lib/matplotlib/colors.py"
+    ],
+    "edited_files": [
+        "lib/matplotlib/colors.py"
+    ],
+    "edit_outcome": false,
+    "lint_outcome": false,
+    "test_outcome": false,
+    "try": 1,
+    "tries": 1,
+    "all_results": [
+        {
+            "instance_id": "matplotlib__matplotlib-24970",
+            "model_name_or_path": "aider--gpt-4o",
+            "model_patch": "diff --git a/lib/matplotlib/colors.py b/lib/matplotlib/colors.py\nindex 2d3072da04..960a3464ba 100644\n--- a/lib/matplotlib/colors.py\n+++ b/lib/matplotlib/colors.py\n@@ -725,11 +725,16 @@ class Colormap:\n                 # Avoid converting large positive values to negative integers.\n                 np.clip(xa, -1, self.N, out=xa)\n                 xa = xa.astype(int)\n-        # Set the over-range indices before the under-range;\n-        # otherwise the under-range values get converted to over-range.\n-        xa[xa > self.N - 1] = self._i_over\n-        xa[xa < 0] = self._i_under\n-        xa[mask_bad] = self._i_bad\n+        \n+        # Create arrays for out-of-bounds and bad values with correct dtype\n+        i_over = np.full_like(xa, self._i_over, dtype=np.min_scalar_type(self._i_over))\n+        i_under = np.full_like(xa, self._i_under, dtype=np.min_scalar_type(self._i_under))\n+        i_bad = np.full_like(xa, self._i_bad, dtype=np.min_scalar_type(self._i_bad))\n+\n+        # Use np.where for conditional assignments\n+        xa = np.where(xa > self.N - 1, i_over, xa)\n+        xa = np.where(xa < 0, i_under, xa)\n+        xa = np.where(mask_bad, i_bad, xa)\n \n         lut = self._lut\n         if bytes:\n@@ -740,7 +745,7 @@ class Colormap:\n         if alpha is not None:\n             alpha = np.clip(alpha, 0, 1)\n             if bytes:\n-                alpha *= 255  # Will be cast to uint8 upon assignment.\n+                alpha = (alpha * 255).astype(np.uint8)\n             if alpha.shape not in [(), xa.shape]:\n                 raise ValueError(\n                     f\"alpha is array-like but its shape {alpha.shape} does \"\n",
+            "model": "gpt-4o",
+            "temperature": 0,
+            "gold_files": [
+                "lib/matplotlib/colors.py"
+            ],
+            "edited_files": [
+                "lib/matplotlib/colors.py"
+            ],
+            "edit_outcome": false,
+            "lint_outcome": false,
+            "test_outcome": false,
+            "try": 1
+        }
+    ],
+    "cost": 0
+}

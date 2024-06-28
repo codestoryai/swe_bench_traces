@@ -1,0 +1,6 @@
+{
+    "instance_id": "django__django-13710",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/django/contrib/admin/options.py b/django/contrib/admin/options.py\nindex dadd4acfa1..3c4cf866a8 100644\n--- a/django/contrib/admin/options.py\n+++ b/django/contrib/admin/options.py\n@@ -2040,7 +2040,10 @@ class InlineModelAdmin(BaseModelAdmin):\n         if self.verbose_name is None:\n             self.verbose_name = self.model._meta.verbose_name\n         if self.verbose_name_plural is None:\n-            self.verbose_name_plural = self.model._meta.verbose_name_plural\n+            if self.verbose_name:\n+                self.verbose_name_plural = ngettext(self.verbose_name, self.verbose_name + 's', 2)\n+            else:\n+                self.verbose_name_plural = self.model._meta.verbose_name_plural\n \n     @property\n     def media(self):\n",
+    "resolved": true
+}

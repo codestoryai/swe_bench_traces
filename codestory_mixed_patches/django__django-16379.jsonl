@@ -1,0 +1,6 @@
+{
+    "instance_id": "django__django-16379",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/django/core/cache/backends/filebased.py b/django/core/cache/backends/filebased.py\nindex 631da49444..f99bad38fe 100644\n--- a/django/core/cache/backends/filebased.py\n+++ b/django/core/cache/backends/filebased.py\n@@ -90,10 +90,11 @@ class FileBasedCache(BaseCache):\n \n     def has_key(self, key, version=None):\n         fname = self._key_to_file(key, version)\n-        if os.path.exists(fname):\n+        try:\n             with open(fname, \"rb\") as f:\n                 return not self._is_expired(f)\n-        return False\n+        except FileNotFoundError:\n+            return False\n \n     def _cull(self):\n         \"\"\"\n@@ -167,3 +168,14 @@ class FileBasedCache(BaseCache):\n             os.path.join(self._dir, fname)\n             for fname in glob.glob1(self._dir, \"*%s\" % self.cache_suffix)\n         ]\n+    def _open_and_lock(self, fname, mode):\n+        \"\"\"\n+        Open a file and acquire an exclusive lock.\n+        \"\"\"\n+        f = open(fname, mode)\n+        try:\n+            locks.lock(f, locks.LOCK_EX)\n+        except Exception:\n+            f.close()\n+            raise\n+        return f\n",
+    "resolved": true
+}

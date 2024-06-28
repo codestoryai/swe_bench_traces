@@ -1,0 +1,6 @@
+{
+    "instance_id": "django__django-13925",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/django/db/models/base.py b/django/db/models/base.py\nindex 4038859cfa..3febbbb0c5 100644\n--- a/django/db/models/base.py\n+++ b/django/db/models/base.py\n@@ -1300,7 +1300,8 @@ class Model(metaclass=ModelBase):\n         if (\n             cls._meta.pk.auto_created and\n             not settings.is_overridden('DEFAULT_AUTO_FIELD') and\n-            not cls._meta.app_config._is_default_auto_field_overridden\n+            not cls._meta.app_config._is_default_auto_field_overridden and\n+            not any(hasattr(base, '_meta') and base._meta.pk for base in cls.__bases__)\n         ):\n             return [\n                 checks.Warning(\n",
+    "resolved": true
+}

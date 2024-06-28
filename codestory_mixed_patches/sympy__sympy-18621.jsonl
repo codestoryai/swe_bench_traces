@@ -1,0 +1,6 @@
+{
+    "instance_id": "sympy__sympy-18621",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/sympy/matrices/expressions/blockmatrix.py b/sympy/matrices/expressions/blockmatrix.py\nindex 11aebbc59f..d3633af51f 100644\n--- a/sympy/matrices/expressions/blockmatrix.py\n+++ b/sympy/matrices/expressions/blockmatrix.py\n@@ -288,6 +288,8 @@ class BlockDiagMatrix(BlockMatrix):\n     sympy.matrices.dense.diag\n     \"\"\"\n     def __new__(cls, *mats):\n+        if len(mats) == 1:\n+            return BlockMatrix([[mats[0]]])\n         return Basic.__new__(BlockDiagMatrix, *mats)\n \n     @property\n@@ -298,6 +300,8 @@ def diag(self):\n     def blocks(self):\n         from sympy.matrices.immutable import ImmutableDenseMatrix\n         mats = self.args\n+        if len(mats) == 1:\n+            return ImmutableDenseMatrix([[mats[0]]])\n         data = [[mats[i] if i == j else ZeroMatrix(mats[i].rows, mats[j].cols)\n                         for j in range(len(mats))]\n                         for i in range(len(mats))]\n",
+    "resolved": true
+}

@@ -1,0 +1,6 @@
+{
+    "instance_id": "sympy__sympy-11400",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/sympy/printing/ccode.py b/sympy/printing/ccode.py\nindex 30a07a7b59..21bcb5c733 100644\n--- a/sympy/printing/ccode.py\n+++ b/sympy/printing/ccode.py\n@@ -43,6 +43,7 @@\n     \"atanh\": \"atanh\",\n     \"floor\": \"floor\",\n     \"ceiling\": \"ceil\",\n+    \"sinc\": lambda x: Piecewise((sin(x)/x, Ne(x, 0)), (1, True)),\n }\n \n # These are the core reserved words in the C language. Taken from:\ndiff --git a/sympy/printing/codeprinter.py b/sympy/printing/codeprinter.py\nindex b46da624bc..322e08b370 100644\n--- a/sympy/printing/codeprinter.py\n+++ b/sympy/printing/codeprinter.py\n@@ -307,7 +307,12 @@ def _print_Symbol(self, expr):\n             return name\n \n     def _print_Function(self, expr):\n-        if expr.func.__name__ in self.known_functions:\n+        if expr.func.__name__ == 'sinc':\n+            from sympy import Piecewise, sin, Ne\n+            x = expr.args[0]\n+            piecewise_expr = Piecewise((sin(x)/x, Ne(x, 0)), (1, True))\n+            return self._print(piecewise_expr)\n+        elif expr.func.__name__ in self.known_functions:\n             cond_func = self.known_functions[expr.func.__name__]\n             func = None\n             if isinstance(cond_func, str):\n",
+    "resolved": false
+}

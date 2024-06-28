@@ -1,0 +1,6 @@
+{
+    "instance_id": "psf__requests-863",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/requests/models.py b/requests/models.py\nindex d8456375..cdb13d84 100644\n--- a/requests/models.py\n+++ b/requests/models.py\n@@ -148,8 +148,12 @@ class Request(object):\n \n         hooks = hooks or {}\n \n-        for (k, v) in list(hooks.items()):\n-            self.register_hook(event=k, hook=v)\n+        for event, hook in hooks.items():\n+            if isinstance(hook, list):\n+                for h in hook:\n+                    self.register_hook(event=event, hook=h)\n+            else:\n+                self.register_hook(event=event, hook=hook)\n \n         #: Session.\n         self.session = session\n@@ -463,6 +467,8 @@ class Request(object):\n     def register_hook(self, event, hook):\n         \"\"\"Properly register a hook.\"\"\"\n \n+        if not callable(hook):\n+            raise TypeError(\"Hook must be callable.\")\n         self.hooks[event].append(hook)\n \n     def deregister_hook(self, event, hook):\n",
+    "resolved": true
+}

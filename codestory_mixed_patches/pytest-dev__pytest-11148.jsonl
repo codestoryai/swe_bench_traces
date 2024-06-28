@@ -1,0 +1,6 @@
+{
+    "instance_id": "pytest-dev__pytest-11148",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/src/_pytest/pathlib.py b/src/_pytest/pathlib.py\nindex e43310ef0..fe81616fd 100644\n--- a/src/_pytest/pathlib.py\n+++ b/src/_pytest/pathlib.py\n@@ -524,6 +524,9 @@ def import_path(\n     if mode is ImportMode.importlib:\n         module_name = module_name_from_path(path, root)\n \n+        if module_name in sys.modules:\n+            return sys.modules[module_name]\n+\n         for meta_importer in sys.meta_path:\n             spec = meta_importer.find_spec(module_name, [str(path.parent)])\n             if spec is not None:\n",
+    "resolved": true
+}

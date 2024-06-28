@@ -1,0 +1,6 @@
+{
+    "instance_id": "sympy__sympy-18057",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/sympy/core/expr.py b/sympy/core/expr.py\nindex 24d89897f7..d1cd5d30eb 100644\n--- a/sympy/core/expr.py\n+++ b/sympy/core/expr.py\n@@ -120,20 +120,13 @@ def _hashable_content(self):\n         return self._args\n \n     def __eq__(self, other):\n-        try:\n-            other = sympify(other)\n-            if not isinstance(other, Expr):\n-                return False\n-        except (SympifyError, SyntaxError):\n+        if not isinstance(other, Expr):\n             return False\n-        # check for pure number expr\n-        if  not (self.is_Number and other.is_Number) and (\n-                type(self) != type(other)):\n+        if not (self.is_Number and other.is_Number) and (type(self) != type(other)):\n             return False\n         a, b = self._hashable_content(), other._hashable_content()\n         if a != b:\n             return False\n-        # check number *in* an expression\n         for a, b in zip(a, b):\n             if not isinstance(a, Expr):\n                 continue\n",
+    "resolved": true
+}

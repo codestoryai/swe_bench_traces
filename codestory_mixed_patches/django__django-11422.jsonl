@@ -1,0 +1,6 @@
+{
+    "instance_id": "django__django-11422",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/django/contrib/auth/migrations/0011_update_proxy_permissions.py b/django/contrib/auth/migrations/0011_update_proxy_permissions.py\nindex c3f617f438..9e21722489 100644\n--- a/django/contrib/auth/migrations/0011_update_proxy_permissions.py\n+++ b/django/contrib/auth/migrations/0011_update_proxy_permissions.py\n@@ -1,9 +1,8 @@\n import sys\n \n from django.core.management.color import color_style\n-from django.db import migrations, transaction\n+from django.db import IntegrityError, migrations, transaction\n from django.db.models import Q\n-from django.db.utils import IntegrityError\n \n WARNING = \"\"\"\n     A problem arose migrating proxy model permissions for {old} to {new}.\n@@ -40,6 +39,7 @@ def update_proxy_model_permissions(apps, schema_editor, reverse=False):\n         new_content_type = concrete_content_type if reverse else proxy_content_type\n         try:\n             with transaction.atomic():\n+                # Update the content_type of the proxy model permissions\n                 Permission.objects.filter(\n                     permissions_query,\n                     content_type=old_content_type,\n",
+    "resolved": false
+}

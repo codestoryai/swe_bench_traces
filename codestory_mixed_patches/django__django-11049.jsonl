@@ -1,0 +1,6 @@
+{
+    "instance_id": "django__django-11049",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/django/db/models/fields/__init__.py b/django/db/models/fields/__init__.py\nindex f32ce64629..ad16738bb2 100644\n--- a/django/db/models/fields/__init__.py\n+++ b/django/db/models/fields/__init__.py\n@@ -1587,10 +1587,15 @@ class DurationField(Field):\n     empty_strings_allowed = False\n     default_error_messages = {\n         'invalid': _(\"'%(value)s' value has an invalid format. It must be in \"\n-                     \"[DD] [HH:[MM:]]ss[.uuuuuu] format.\")\n+                     \"[DD] [[HH:]MM:]ss[.uuuuuu] format.\")\n     }\n     description = _(\"Duration\")\n \n+    def __init__(self, verbose_name=None, name=None, help_text=None, **kwargs):\n+        if help_text is None:\n+            help_text = _(\"Enter a duration in the format [DD] [[HH:]MM:]ss[.uuuuuu].\")\n+        super().__init__(verbose_name, name, help_text=help_text, **kwargs)\n+\n     def get_internal_type(self):\n         return \"DurationField\"\n \n@@ -1636,7 +1641,6 @@ class DurationField(Field):\n             **kwargs,\n         })\n \n-\n class EmailField(CharField):\n     default_validators = [validators.validate_email]\n     description = _(\"Email address\")\n",
+    "resolved": true
+}

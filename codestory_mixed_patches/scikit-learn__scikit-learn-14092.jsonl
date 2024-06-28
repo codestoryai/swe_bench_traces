@@ -1,0 +1,6 @@
+{
+    "instance_id": "scikit-learn__scikit-learn-14092",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/sklearn/utils/validation.py b/sklearn/utils/validation.py\nindex 8747844e5..9db399ac8 100644\n--- a/sklearn/utils/validation.py\n+++ b/sklearn/utils/validation.py\n@@ -971,6 +971,12 @@ def check_scalar(x, name, target_type, min_val=None, max_val=None):\n     ValueError\n         If the parameter's value violates the given bounds.\n     \"\"\"\n+    \n+    # Convert numpy scalar types to their native Python types\n+    if isinstance(x, (np.int64, np.int32)):\n+        x = int(x)\n+    elif isinstance(x, (np.float64, np.float32)):\n+        x = float(x)\n \n     if not isinstance(x, target_type):\n         raise TypeError('`{}` must be an instance of {}, not {}.'\n",
+    "resolved": true
+}

@@ -1,0 +1,6 @@
+{
+    "instance_id": "matplotlib__matplotlib-24970",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/lib/matplotlib/colors.py b/lib/matplotlib/colors.py\nindex 2d3072da04..c5cf1aa5a6 100644\n--- a/lib/matplotlib/colors.py\n+++ b/lib/matplotlib/colors.py\n@@ -725,6 +725,8 @@ class Colormap:\n                 # Avoid converting large positive values to negative integers.\n                 np.clip(xa, -1, self.N, out=xa)\n                 xa = xa.astype(int)\n+        else:\n+            xa = xa.astype(np.int32)\n         # Set the over-range indices before the under-range;\n         # otherwise the under-range values get converted to over-range.\n         xa[xa > self.N - 1] = self._i_over\n@@ -734,6 +736,8 @@ class Colormap:\n         lut = self._lut\n         if bytes:\n             lut = (lut * 255).astype(np.uint8)\n+        else:\n+            xa = xa.astype(np.int32)\n \n         rgba = lut.take(xa, axis=0, mode='clip')\n \n",
+    "resolved": true
+}

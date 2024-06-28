@@ -1,0 +1,6 @@
+{
+    "instance_id": "django__django-15902",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/django/forms/formsets.py b/django/forms/formsets.py\nindex 3adbc6979a..70521b4562 100644\n--- a/django/forms/formsets.py\n+++ b/django/forms/formsets.py\n@@ -32,6 +32,8 @@ class ManagementForm(Form):\n     as well.\n     \"\"\"\n \n+    template_name = \"django/forms/div.html\"\n+\n     TOTAL_FORMS = IntegerField(widget=HiddenInput)\n     INITIAL_FORMS = IntegerField(widget=HiddenInput)\n     # MIN_NUM_FORM_COUNT and MAX_NUM_FORM_COUNT are output with the rest of the\n",
+    "resolved": true
+}

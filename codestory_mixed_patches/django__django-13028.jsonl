@@ -1,0 +1,6 @@
+{
+    "instance_id": "django__django-13028",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/django/db/models/sql/query.py b/django/db/models/sql/query.py\nindex ce18098fd2..c4c33c2c3f 100644\n--- a/django/db/models/sql/query.py\n+++ b/django/db/models/sql/query.py\n@@ -1123,7 +1123,14 @@ class Query(BaseExpression):\n                     self.check_query_object_type(v, opts, field)\n \n     def check_filterable(self, expression):\n-        \"\"\"Raise an error if expression cannot be used in a WHERE clause.\"\"\"\n+        \"\"\"\n+        Override to handle specific cases:\n+        - Skip the filterability check for model instances.\n+        - Skip the filterability check for the 'filterable' attribute.\n+        \"\"\"\n+        from django.db import models\n+        if isinstance(expression, models.Model):\n+            return\n         if not getattr(expression, 'filterable', True):\n             raise NotSupportedError(\n                 expression.__class__.__name__ + ' is disallowed in the filter '\n",
+    "resolved": true
+}

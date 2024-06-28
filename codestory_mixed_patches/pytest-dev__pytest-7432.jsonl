@@ -1,0 +1,6 @@
+{
+    "instance_id": "pytest-dev__pytest-7432",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/src/_pytest/skipping.py b/src/_pytest/skipping.py\nindex 7bd975e5a..e3bbe0ac0 100644\n--- a/src/_pytest/skipping.py\n+++ b/src/_pytest/skipping.py\n@@ -271,7 +271,12 @@ def pytest_runtest_makereport(item: Item, call: CallInfo[None]):\n             rep.longrepr = \"Unexpected success\"\n         rep.outcome = \"failed\"\n     elif item.config.option.runxfail:\n-        pass  # don't interfere\n+        if rep.skipped and item._store.get(skipped_by_mark_key, True) and type(rep.longrepr) is tuple:\n+            # Handle skipped tests when --runxfail is used\n+            _, _, reason = rep.longrepr\n+            filename, line = item.reportinfo()[:2]\n+            assert line is not None\n+            rep.longrepr = str(filename), line + 1, reason\n     elif call.excinfo and isinstance(call.excinfo.value, xfail.Exception):\n         assert call.excinfo.value.msg is not None\n         rep.wasxfail = \"reason: \" + call.excinfo.value.msg\n",
+    "resolved": true
+}

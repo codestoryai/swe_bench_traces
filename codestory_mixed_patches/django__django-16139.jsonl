@@ -1,0 +1,6 @@
+{
+    "instance_id": "django__django-16139",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/django/contrib/auth/forms.py b/django/contrib/auth/forms.py\nindex b3cfc6723c..2eece3af48 100644\n--- a/django/contrib/auth/forms.py\n+++ b/django/contrib/auth/forms.py\n@@ -163,13 +163,17 @@ class UserChangeForm(forms.ModelForm):\n         super().__init__(*args, **kwargs)\n         password = self.fields.get(\"password\")\n         if password:\n-            password.help_text = password.help_text.format(\"../password/\")\n+            password.help_text = password.help_text.format(self.get_password_change_url())\n         user_permissions = self.fields.get(\"user_permissions\")\n-        if user_permissions:\n+        if (user_permissions):\n             user_permissions.queryset = user_permissions.queryset.select_related(\n                 \"content_type\"\n             )\n \n+    def get_password_change_url(self):\n+        if self.instance.pk:\n+            return f\"../../{self.instance.pk}/password/\"\n+        return \"../password/\"\n \n class AuthenticationForm(forms.Form):\n     \"\"\"\n",
+    "resolved": true
+}

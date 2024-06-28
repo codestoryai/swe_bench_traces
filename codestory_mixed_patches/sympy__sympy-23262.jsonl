@@ -1,0 +1,6 @@
+{
+    "instance_id": "sympy__sympy-23262",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/sympy/utilities/lambdify.py b/sympy/utilities/lambdify.py\nindex da67263b19..a62d8ebad0 100644\n--- a/sympy/utilities/lambdify.py\n+++ b/sympy/utilities/lambdify.py\n@@ -959,9 +959,11 @@ def _recursive_to_string(doprint, arg):\n             left, right = \"[]\"\n         elif isinstance(arg, tuple):\n             left, right = \"()\"\n+            if len(arg) == 1:\n+                return left + _recursive_to_string(doprint, arg[0]) + \",)\"\n         else:\n             raise NotImplementedError(\"unhandled type: %s, %s\" % (type(arg), arg))\n-        return left +', '.join(_recursive_to_string(doprint, e) for e in arg) + right\n+        return left + ', '.join(_recursive_to_string(doprint, e) for e in arg) + right\n     elif isinstance(arg, str):\n         return arg\n     else:\n",
+    "resolved": true
+}

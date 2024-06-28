@@ -1,0 +1,6 @@
+{
+    "instance_id": "django__django-13158",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/django/db/models/query.py b/django/db/models/query.py\nindex 07d6ffd4ca..b9ed47d9e1 100644\n--- a/django/db/models/query.py\n+++ b/django/db/models/query.py\n@@ -920,6 +920,8 @@ class QuerySet:\n         \"\"\"Return an empty QuerySet.\"\"\"\n         clone = self._chain()\n         clone.query.set_empty()\n+        if clone.query.combined_queries:\n+            clone.query.combined_queries = ()\n         return clone\n \n     ##################################################################\n",
+    "resolved": true
+}

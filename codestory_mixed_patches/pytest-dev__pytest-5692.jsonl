@@ -1,0 +1,6 @@
+{
+    "instance_id": "pytest-dev__pytest-5692",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/src/_pytest/junitxml.py b/src/_pytest/junitxml.py\nindex 15c630b1d..a58bf842a 100644\n--- a/src/_pytest/junitxml.py\n+++ b/src/_pytest/junitxml.py\n@@ -641,6 +641,7 @@ class LogXML:\n         self.suite_start_time = time.time()\n \n     def pytest_sessionfinish(self):\n+        import socket\n         dirname = os.path.dirname(os.path.abspath(self.logfile))\n         if not os.path.isdir(dirname):\n             os.makedirs(dirname)\n@@ -666,6 +667,8 @@ class LogXML:\n             skipped=self.stats[\"skipped\"],\n             tests=numtests,\n             time=\"%.3f\" % suite_time_delta,\n+            timestamp=self._get_timestamp(),\n+            hostname=socket.gethostname(),\n         )\n         logfile.write(Junit.testsuites([suite_node]).unicode(indent=0))\n         logfile.close()\n@@ -689,3 +692,6 @@ class LogXML:\n                 ]\n             )\n         return \"\"\n+    def _get_timestamp(self):\n+        from datetime import datetime\n+        return datetime.now().isoformat()\n",
+    "resolved": true
+}

@@ -1,0 +1,6 @@
+{
+    "instance_id": "matplotlib__matplotlib-23314",
+    "model_name_or_path": "codestory-mixed",
+    "model_patch": "diff --git a/lib/mpl_toolkits/mplot3d/axes3d.py b/lib/mpl_toolkits/mplot3d/axes3d.py\nindex 9db44b7994..8b137da918 100644\n--- a/lib/mpl_toolkits/mplot3d/axes3d.py\n+++ b/lib/mpl_toolkits/mplot3d/axes3d.py\n@@ -387,6 +387,10 @@ class Axes3D(Axes):\n \n     @martist.allow_rasterization\n     def draw(self, renderer):\n+        # Check visibility of the Axes3D object\n+        if not self.get_visible():\n+            return\n+\n         self._unstale_viewLim()\n \n         # draw the background patch\n",
+    "resolved": true
+}

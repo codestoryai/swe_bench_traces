@@ -1,4 +1,14 @@
-## SWE Bench Lite results
+
+
+ ██████╗ ██████╗ ██████╗ ███████╗███████╗████████╗ ██████╗ ██████╗ ██╗   ██╗
+██╔════╝██╔═══██╗██╔══██╗██╔════╝██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝
+██║     ██║   ██║██║  ██║█████╗  ███████╗   ██║   ██║   ██║██████╔╝ ╚████╔╝ 
+██║     ██║   ██║██║  ██║██╔══╝  ╚════██║   ██║   ██║   ██║██╔══██╗  ╚██╔╝  
+╚██████╗╚██████╔╝██████╔╝███████╗███████║   ██║   ╚██████╔╝██║  ██║   ██║   
+ ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝╚══════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝   
+                                                                            
+
+## SWE Bench Lite results: 40.3% SOTA at the time of commit
 
 At CodeStory, we are building Aide, a new age editor made for working along with agents. Unlike AI engineers which throw users out of the loop and chat/copilots which are very much triggerd by humans, we envison an editor where agents and developers come together to hack and collaborate.
 
